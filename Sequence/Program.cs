@@ -8,71 +8,51 @@ namespace Sequence
         static void Main(string[] args)
         {
             int[] arr = { 1, 3, 2, 5, 6, 8, 7 };
+            int position = 0;
 
-            foreach (int number in arr)
+            foreach (int element in arr)
             {
-                Console.Write(number + " ");
+                Recursion(arr, ++position, 0, element, new List<int>() { element });
+            }
+        }
+
+        static int maxLevel = 1;
+        static List<int> list = new List<int>();
+
+        static void Recursion(int[] arr, int pos, int level, int prevElement, IEnumerable<int> sequence)
+        {
+            if (pos == arr.Length)
+            {
+                Console.WriteLine();
+
+                foreach (int element in sequence)
+                {
+                    Console.Write("{0} ", element);
+                }
+
+                Console.WriteLine(" level: {0}", level);
+                return;
+            }
+
+            for (int i = pos; i < arr.Length; i++)
+            {
+                if (prevElement < arr[i])
+                {
+                    List<int> newSequence = new List<int>();
+                    newSequence.AddRange(sequence);
+                    newSequence.Add(arr[i]);
+                    Recursion(arr, i + 1, level + 1, arr[i], newSequence);
+                }
             }
 
             Console.WriteLine();
-            List<List<int>> lists = new List<List<int>>();
-            List<int> beginList = new List<int>();
-            int max = 0;
 
-            for (int i = 0; i < arr.Length; i++)
+            foreach (int element in sequence)
             {
-                for (int j = i + 1; j < arr.Length; j++)
-                {
-                    List<int> tempList = new List<int>();
-                    tempList.Add(arr[i]);
-
-                    for (int y = j; y < arr.Length; y++)
-                    {
-                        if (arr[y] > tempList[tempList.Count - 1])
-                        {
-                            tempList.Add(arr[y]);
-                        }
-                    }
-
-                    max = tempList.Count;
-                    lists.Add(tempList);
-                }
+                Console.Write("{0} ", element);
             }
 
-            lists.Sort((List<int> l1, List<int> l2) =>
-            {
-                if (l1.Count > l2.Count)
-                {
-                    return -1;
-                }
-                else
-                {
-                    if (l1.Count < l2.Count)
-                    {
-                        return 1;
-                    }
-                    else
-                    {
-                        return 0;
-                    }
-                }
-            }
-            );
-
-            int index = 0;
-
-            foreach (List<int> list in lists)
-            {
-                foreach (int number in list)
-                {
-                    Console.Write(number + " ");
-                }
-
-                Console.WriteLine();
-
-                if (index++ == 1)
-                { break; }
-            }
+            Console.WriteLine(" level: {0}", level);
         }
     }
 }
