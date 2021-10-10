@@ -78,19 +78,10 @@ namespace Sequence
 
         static void EndSequence(ICollection<int> sequence)
         {
-            //Console.WriteLine();
-
-            //foreach (int element in sequence)
-            //{
-            //    Console.Write("{0} ", element);
-            //}
-
             if (sequence.Count > maxCount)
             {
                 lists.Add(sequence);
             }
-
-            //Console.WriteLine(" count: {0}", sequence.Count);
         }
     }
 }
