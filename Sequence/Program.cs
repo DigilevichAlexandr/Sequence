@@ -12,25 +12,53 @@ namespace Sequence
 
             foreach (int element in arr)
             {
-                Recursion(arr, ++position, 0, element, new List<int>() { element });
+                Recursion(arr, ++position, element, new List<int>() { element });
+            }
+
+            lists.Sort((ICollection<int> l1, ICollection<int> l2) =>
+            {
+                if (l1.Count > l2.Count)
+                {
+                    return -1;
+                }
+                else
+                {
+                    if (l1.Count < l2.Count)
+                    {
+                        return 1;
+                    }
+                    else
+                    {
+                        return 0;
+                    }
+                }
+            }
+            );
+
+            int index = 0;
+
+            foreach (List<int> list in lists)
+            {
+                foreach (int number in list)
+                {
+                    Console.Write(number + " ");
+                }
+
+                Console.WriteLine();
+
+                if (index++ == 1)
+                { break; }
             }
         }
 
-        static int maxLevel = 1;
-        static List<int> list = new List<int>();
+        static int maxCount = 0;
+        static List<ICollection<int>> lists = new List<ICollection<int>>();
 
-        static void Recursion(int[] arr, int pos, int level, int prevElement, IEnumerable<int> sequence)
+        static void Recursion(int[] arr, int pos, int prevElement, ICollection<int> sequence)
         {
             if (pos == arr.Length)
             {
-                Console.WriteLine();
-
-                foreach (int element in sequence)
-                {
-                    Console.Write("{0} ", element);
-                }
-
-                Console.WriteLine(" level: {0}", level);
+                EndSequence(sequence);
                 return;
             }
 
@@ -41,18 +69,28 @@ namespace Sequence
                     List<int> newSequence = new List<int>();
                     newSequence.AddRange(sequence);
                     newSequence.Add(arr[i]);
-                    Recursion(arr, i + 1, level + 1, arr[i], newSequence);
+                    Recursion(arr, i + 1, arr[i], newSequence);
                 }
             }
 
-            Console.WriteLine();
+            EndSequence(sequence);
+        }
 
-            foreach (int element in sequence)
+        static void EndSequence(ICollection<int> sequence)
+        {
+            //Console.WriteLine();
+
+            //foreach (int element in sequence)
+            //{
+            //    Console.Write("{0} ", element);
+            //}
+
+            if (sequence.Count > maxCount)
             {
-                Console.Write("{0} ", element);
+                lists.Add(sequence);
             }
 
-            Console.WriteLine(" level: {0}", level);
+            //Console.WriteLine(" count: {0}", sequence.Count);
         }
     }
 }
